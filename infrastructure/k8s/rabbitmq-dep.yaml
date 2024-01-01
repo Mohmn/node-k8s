@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rabbitmq
+  template:
+    metadata:
+      labels:
+        app: rabbitmq
+    spec:
+      containers:
+        - name: rabbitmq
+          image:  rabbitmq:3-management
+          # use secret file instead
+          # and create a volume to persist data b/w new rollouts
+          env:
+            - name: RABBITMQ_DEFAULT_PASS
+              value: 'password'
+            - name: RABBITMQ_DEFAULT_USER
+              value: 'user'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq-srv
+spec:
+  selector:
+    app: rabbitmq
+  ports:
+   - name: http
+     protocol: TCP
+     port: 15672
+     targetPort: 15672
+   - name: prometheus
+     protocol: TCP
+     port: 15692
+     targetPort: 15692
+   - name: amqp
+     protocol: TCP
+     port: 5672
+     targetPort: 5672
+
+# ---
+# # node port service
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: rabbitmq-nodeport-srv
+# spec:
+#   type: NodePort
+#   selector:
+#     app: rabbitmq # we are telling this nodePort service here to find all the pods that have a lable of posts
+#   ports:
+#    - name: http
+#      protocol: TCP
+#      port: 15672
+#    - name: prometheus
+#      protocol: TCP
+#      port: 15692
+#    - name: amqp
+#      protocol: TCP
+#      port: 5672
