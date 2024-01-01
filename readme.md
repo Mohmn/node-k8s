@@ -1,7 +1,8 @@
 
 # Project: Fibonacci Service with Kubernetes and RabbitMQ
 
-This project demonstrates a Fibonacci number generation service, leveraging Kubernetes for scaling, RabbitMQ for message queuing, and Redis for data caching. The setup ensures efficient handling of requests and graceful error management.
+This project demonstrates a Fibonacci number generation service, leveraging Kubernetes for scaling, RabbitMQ for message queuing, and Redis for data caching
+
 
 ## Features
 
